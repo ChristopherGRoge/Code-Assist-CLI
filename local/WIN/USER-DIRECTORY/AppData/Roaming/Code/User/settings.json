@@ -1,0 +1,32 @@
+{
+  "html.format.wrapLineLength": 0,
+  "workbench.editor.empty.hint": "hidden",
+  "chat.commandCenter.enabled": false,
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": false,
+  "continue.enableTabAutocomplete": false,
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "claudeCode.environmentVariables": [
+    {
+      "name": "CLAUDE_CODE_USE_BEDROCK",
+      "value": "true"
+    },
+    {
+      "name": "AWS_PROFILE",
+      "value": "bedrock"
+    }
+  ],
+  "claudeCode.selectedModel": "us-gov.anthropic.claude-sonnet-4-5-20250929-v1:0",
+  "editor.minimap.enabled": false,
+  "diffEditor.ignoreTrimWhitespace": true,
+  "claudeCode.preferredLocation": "panel",
+  "continue.enableNextEdit": false,
+  "continue.showInlineTip": false,
+  "continue.telemetryEnabled": false,
+  "gitlab.duoCodeSuggestions.enabled": false,
+  "gitlab.duoChat.enabled": false,
+  "gitlab.duoAgentPlatform.enabled": false,
+  "gitlab.duo.enabledWithoutGitlabProject": false,
+  "gitlab.keybindingHints.enabled": false,
+  "gitlab.duoCodeSuggestions.openTabsContext": false
+}

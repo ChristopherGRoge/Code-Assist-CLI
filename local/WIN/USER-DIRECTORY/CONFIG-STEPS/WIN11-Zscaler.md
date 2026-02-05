@@ -1,0 +1,11 @@
+**Set environment variable:**
+    - Press **Windows Key**
+    - Search: **"Edit environment variables for your account"**
+    - Click to open Environment Variables dialog
+    - Under **"User variables"**, click **"New..."**
+    - Enter:
+        - **Variable name:** `NODE_EXTRA_CA_CERTS`
+        - **Variable value:** (click **"Browse File..."**)
+    - Navigate to: `C:\Users\<your-EID>\.continue\certs\`
+    - Select: `ZscalerRootCertificate-2048-SHA256.crt`
+    - Click **"OK"** on all dialogs

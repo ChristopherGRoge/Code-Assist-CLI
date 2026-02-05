@@ -1,0 +1,17 @@
+# Rust
+/target/
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Large binary files - these are downloaded at runtime or use local fallback
+# To include them, use Git LFS or remove these lines
+local/2.1.31/*/claude
+local/2.1.31/*/claude.exe
