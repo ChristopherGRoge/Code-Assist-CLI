@@ -18,16 +18,16 @@ jobs:
         include:
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            artifact_name: code-assist.exe
-            asset_name: code-assist-windows-x64.exe
+            binary: code-assist.exe
+            archive: code-assist-windows-x64.zip
           - os: macos-latest
             target: x86_64-apple-darwin
-            artifact_name: code-assist
-            asset_name: code-assist-macos-x64
+            binary: code-assist
+            archive: code-assist-macos-x64.zip
           - os: macos-latest
             target: aarch64-apple-darwin
-            artifact_name: code-assist
-            asset_name: code-assist-macos-arm64
+            binary: code-assist
+            archive: code-assist-macos-arm64.zip
 
     runs-on: ${{ matrix.os }}
 
@@ -42,11 +42,24 @@ jobs:
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
 
+      - name: Package (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cd target/${{ matrix.target }}/release
+          chmod +x ${{ matrix.binary }}
+          zip -j ../../../${{ matrix.archive }} ${{ matrix.binary }}
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cd target/${{ matrix.target }}/release
+          Compress-Archive -Path ${{ matrix.binary }} -DestinationPath ../../../${{ matrix.archive }}
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.asset_name }}
-          path: target/${{ matrix.target }}/release/${{ matrix.artifact_name }}
+          name: ${{ matrix.archive }}
+          path: ${{ matrix.archive }}
 
   release:
     needs: build
@@ -67,9 +80,9 @@ jobs:
       - name: Prepare release files
         run: |
           mkdir -p release
-          cp artifacts/code-assist-windows-x64.exe/code-assist.exe release/code-assist-windows-x64.exe
-          cp artifacts/code-assist-macos-x64/code-assist release/code-assist-macos-x64
-          cp artifacts/code-assist-macos-arm64/code-assist release/code-assist-macos-arm64
+          cp artifacts/code-assist-windows-x64.zip/code-assist-windows-x64.zip release/
+          cp artifacts/code-assist-macos-x64.zip/code-assist-macos-x64.zip release/
+          cp artifacts/code-assist-macos-arm64.zip/code-assist-macos-arm64.zip release/
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
