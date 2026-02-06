@@ -28,6 +28,14 @@ jobs:
             target: aarch64-apple-darwin
             binary: code-assist
             archive: code-assist-macos-arm64.zip
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            binary: code-assist
+            archive: code-assist-linux-x64.zip
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            binary: code-assist
+            archive: code-assist-linux-arm64.zip
 
     runs-on: ${{ matrix.os }}
 
@@ -39,8 +47,16 @@ jobs:
         with:
           targets: ${{ matrix.target }}
 
+      - name: Install cross-compilation tools (Linux ARM64)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
 
       - name: Package (Unix)
         if: runner.os != 'Windows'
@@ -80,9 +96,9 @@ jobs:
       - name: Prepare release files
         run: |
           mkdir -p release
-          cp artifacts/code-assist-windows-x64.zip/code-assist-windows-x64.zip release/
-          cp artifacts/code-assist-macos-x64.zip/code-assist-macos-x64.zip release/
-          cp artifacts/code-assist-macos-arm64.zip/code-assist-macos-arm64.zip release/
+          for artifact in artifacts/*/; do
+            cp "${artifact}"*.zip release/
+          done
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
